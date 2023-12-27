@@ -16,6 +16,8 @@ const customerOrderRoutes = require('./routes/customerOrderRoutes')
 const usersRoutes = require('./routes/usersRoutes')
 const userAuthRoutes = require('./routes/userAuthRoutes')
 
+const path = require("path")
+
 
 
 connectDB()
@@ -54,12 +56,31 @@ app.use('/home', (req, res) =>{
     res.send('Toy Store API')
 })
 
-app.use((req, res) =>{
-    res.redirect('/home')
-})
+// app.use((req, res) =>{
+//     res.redirect('/home')
+// })
 //------------------------------------
 
+//Front-End
 
+// app.use(express.static(path.join(__dirname, "./client/dist")));
+// app.get("*", function (_, res) {
+//   res.sendFile(
+//     path.join(__dirname, "./client/dist/index.html"),
+//     function (err) {
+//       res.status(500).send(err);
+//     }
+//   );
+// });
+
+app.use(express.static(path.join(__dirname, "./client/dist")));
+
+// Catch-all route to serve 'index.html'
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+});
+
+//------------------------------------
 
 mongoose.connection.once('open',() =>{
     console.log('connected to mongoDB')
